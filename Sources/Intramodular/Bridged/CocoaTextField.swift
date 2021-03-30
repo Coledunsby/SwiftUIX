@@ -9,7 +9,7 @@ import SwiftUI
 
 /// A control that displays an editable text interface.
 public struct CocoaTextField<Label: View>: CocoaView {
-    typealias Rect = ((_ bounds: CGRect, _ original: CGRect) -> CGRect)
+    public typealias Rect = ((_ bounds: CGRect, _ original: CGRect) -> CGRect)
     
     public struct CharactersChange: Hashable {
         public let range: NSRange
@@ -349,12 +349,30 @@ extension CocoaTextField {
 }
 
 extension CocoaTextField {
+    public func textRect(_ textRect: @escaping Rect) -> Self {
+        then({ $0.configuration.textRect = textRect })
+    }
+
+    public func editingRect(_ editingRect: @escaping Rect) -> Self {
+        then({ $0.configuration.editingRect = editingRect })
+    }
+
+    public func clearButtonRect(_ clearButtonRect: @escaping Rect) -> Self {
+        then({ $0.configuration.clearButtonRect = clearButtonRect })
+    }
+}
+
+extension CocoaTextField {
     public func isInitialFirstResponder(_ isInitialFirstResponder: Bool) -> Self {
         then({ $0.configuration.isInitialFirstResponder = isInitialFirstResponder })
     }
     
     public func isFirstResponder(_ isFirstResponder: Bool) -> Self {
         then({ $0.configuration.isFirstResponder = isFirstResponder })
+    }
+
+    public func responderIndex(_ responderIndex: Int) -> Self {
+        then({ $0.configuration.responderIndex = responderIndex })
     }
 }
 
