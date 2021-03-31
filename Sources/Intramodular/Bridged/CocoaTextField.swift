@@ -28,6 +28,7 @@ public struct CocoaTextField<Label: View>: CocoaView {
         
         var isInitialFirstResponder: Bool?
         var isFirstResponder: Bool?
+        var responderIndex: Int?
         
         var focusRingType: FocusRingType = .none
         
@@ -232,6 +233,10 @@ fileprivate struct _CocoaTextField<Label: View>: UIViewRepresentable {
                 uiView.inputView = nil
             }
         }
+
+        if let responderIndex = configuration.responderIndex {
+             uiView.tag = responderIndex
+         }
         
         DispatchQueue.main.async {
             if let isFirstResponder = configuration.isFirstResponder, uiView.window != nil {
