@@ -133,7 +133,23 @@ fileprivate struct _CocoaTextField<Label: View>: UIViewRepresentable {
         
         func textFieldShouldReturn(_ textField: UITextField) -> Bool {
             if configuration.dismissKeyboardOnReturn {
-                textField.resignFirstResponder()
+                var nextField: UIView?
+
+                if textField.tag != 0 {
+                    let nextTag = textField.tag + 1
+                    var parentView = textField.superview
+
+                    while nextField == nil && parentView != nil {
+                        nextField = parentView?.viewWithTag(nextTag)
+                        parentView = parentView?.superview
+                    }
+                }
+
+                if let nextField = nextField {
+                    nextField.becomeFirstResponder()
+                } else {
+                    textField.resignFirstResponder()
+                }
             }
             
             configuration.onCommit()
